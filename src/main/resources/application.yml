@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: kakaopay
+  h2:
+    console:
+      enabled: true
+      path: /kakaopay
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:file:~/H2/kakaopay;AUTO_SERVER=TRUE
+    username: shinch
+    password: 1234
+    initialize: true
+    initialization-mode: always
+    schema: classpath:schema.sql
+    data: classpath:data.sql
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  resources:
+    cache:
+      period: 31536000
+      cachecontrol:
+        max-age: 31536000
+    chain:
+      html-application-cache: true
+      enabled: true
+      strategy:
+        content:
+          enabled: true
+          paths: /webjars/swagger-ui/**.*
+
+springdoc:
+  version: '@springdoc@'
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    display-request-duration: true
+    groups-order: DESC
+    operationsSorter: method
+    disable-swagger-default-url: true
+  show-actuator: true
+  group-configs:
+    - group: 뿌리기
+      packages-to-scan: com.kakaopay.shinch.spread

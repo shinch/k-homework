@@ -1,0 +1,72 @@
+buildscript {
+    apply from: 'library-info.gradle'
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+}
+
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'net.ltgt.apt' version '0.21' apply false
+    id 'org.springframework.boot' version '2.2.4.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply false
+    id 'io.franzbecker.gradle-lombok' version '3.2.0' apply false
+    id 'com.gorylenko.gradle-git-properties' version '2.2.1' apply false
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10" apply false
+}
+
+def generatedDirectory = "build/generated/source/main"
+
+group 'com.kakaopay.shinch.speread'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+
+sourceSets {
+    main.java.srcDirs += [ generatedDirectory ]
+}
+
+tasks.withType(JavaCompile) {
+    options.annotationProcessorGeneratedSourcesDirectory = file(generatedDirectory)
+}
+
+clean.doLast {
+    file(generatedDirectory).deleteDir()
+}
+
+dependencies {
+    annotationProcessor rootProject.ext.dependencies.annotationApi
+    annotationProcessor rootProject.ext.dependencies.projectLombok
+    annotationProcessor rootProject.ext.dependencies.mapstructProcessor
+    annotationProcessor rootProject.ext.dependencies.hibernateJpa
+    testCompile rootProject.ext.dependencies.starterTest
+    testCompile rootProject.ext.dependencies.spockCore
+    testCompile rootProject.ext.dependencies.spockSpring
+    testCompile rootProject.ext.dependencies.equalsverifier
+    testCompile rootProject.ext.dependencies.joengenduvel
+    compile rootProject.ext.dependencies.groovyAll
+    compile rootProject.ext.dependencies.projectLombok
+    compile rootProject.ext.dependencies.mapstruct
+    compile rootProject.ext.dependencies.guava
+    compile rootProject.ext.dependencies.springdocUi
+    compile rootProject.ext.dependencies.starterWeb
+    compile rootProject.ext.dependencies.springWeb
+    compile rootProject.ext.dependencies.springWebMvc
+    compile rootProject.ext.dependencies.springContext
+    compile rootProject.ext.dependencies.slf4jApi
+    compile rootProject.ext.dependencies.validationApi
+    compile rootProject.ext.dependencies.starterDataJpa
+    compile rootProject.ext.dependencies.HikariCP
+    compile rootProject.ext.dependencies.hibernateJava8
+    compile rootProject.ext.dependencies.hibernateEnvers
+    compile rootProject.ext.dependencies.hibernateJpa
+    runtimeOnly rootProject.ext.dependencies.h2Db
+}
